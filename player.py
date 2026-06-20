@@ -10,6 +10,7 @@ class Player(CircleShape):
         self.rotation: int = 0
         self.cooldown_timer: float = 0.0
         self.score: int = 0
+        self.lives: int = PLAYER_LIVES
 
         # in the Player class
     def triangle(self) -> list[pygame.Vector2]:
