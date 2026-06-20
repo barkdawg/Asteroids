@@ -18,6 +18,8 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     game_clock: pygame.timeClock = pygame.time.Clock()
+    font = pygame.font.SysFont("Arial", SCORE_HEADER_FONT_SIZE)
+    header_surface = font.render(f"Player 1", True, "white") # Could change to "Player 1" and "Player 2" if I add multiplayer
 
     #create sprite groups and assign them to the Player class - muist do before any Player objects are created
     updatable = pygame.sprite.Group()
@@ -34,6 +36,8 @@ def main():
     asteroid_field = AsteroidField()
     dt = 0.0   
 
+    last_score = 0 #to keep track of score to know when to render it. Only render when score changes to save on performance. Not really necessary but it's a good practice to only do work when necessary.
+    score_surface = font.render(f"Score: {player.score}", True, "white") # to render with score of 0 for the first time since we only render when the score changes and it starts at 0.
     while True:
         log_state()
         for event in pygame.event.get():
@@ -56,6 +60,11 @@ def main():
         screen.fill("black")
         for obj in drawable:
             obj.draw(screen)
+        if player.score != last_score:
+            last_score = player.score
+            score_surface = font.render(f"Score: {player.score}", True, "white")
+        screen.blit(header_surface, (10, 10))
+        screen.blit(score_surface, (10, 10 + SCORE_HEADER_FONT_SIZE + 5)) #so the score displays below the player. The +5 is just for extra padding
         pygame.display.flip()
         
         #limit framerate to 60 fps and get delta time
