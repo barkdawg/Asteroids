@@ -49,6 +49,8 @@ def main():
             for shot in shots:
                 if asteroid.collides_with(shot):
                     log_event("asteroid_shot")
+                    shot.player.score += 10
+                    log_event(f"score_increased: {shot.player.score}")
                     asteroid.split()
                     shot.kill()
         screen.fill("black")
